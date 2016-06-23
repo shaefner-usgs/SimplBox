@@ -182,6 +182,7 @@
         openImage: function (p_Source, p_Direction) {
             var base = this,
                 documentFragment = document.createDocumentFragment(),
+                divElement = document.createElement("div"),
                 imageElement = document.createElement("img"),
                 imageElementControl = document.getElementById(base.m_Options.imageElementId);
 
@@ -213,13 +214,14 @@
             }
 
             // Set attributes of new image element.
-            imageElement.setAttribute("id", base.m_Options.imageElementId);
+            divElement.setAttribute("id", base.m_Options.imageElementId);
+            divElement.setAttribute("style", "position: fixed; cursor: pointer; opacity: 0;");
             imageElement.setAttribute("src", p_Source.getAttribute("href"));
             imageElement.setAttribute("alt", base.m_Alt);
-            imageElement.setAttribute("style", "position: fixed; cursor: pointer; opacity: 0;") ;
 
             // Append to fragment and append fragment to body.
-            documentFragment.appendChild(imageElement);
+            divElement.appendChild(imageElement);
+            documentFragment.appendChild(divElement);
             bodyElem.appendChild(documentFragment);
 
             // Set current image element.
@@ -294,14 +296,16 @@
                 temporaryImageObject = new Image(),
                 imageWidth = 0,
                 imageHeight = 0,
-                imageSizeRatio = 0;
+                imageSizeRatio = 0,
+                imageTag;
 
             // If no element provided, quit.
             if (!p_Element) {
                 return;
             }
 
-            base.m_ImageSource = p_Element.getAttribute("src"); // Get element's source attribute for loading image.
+            imageTag = p_Element.querySelector('img');
+            base.m_ImageSource = imageTag.getAttribute("src"); // Get element's source attribute for loading image.
             base.m_ScreenHeight = window.innerHeight || docElem.offsetHeight; // Get window height.
             base.m_ScreenWidth = window.innerWidth || docElem.offsetWidth; // Get window width.
 
